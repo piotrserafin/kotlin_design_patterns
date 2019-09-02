@@ -8,9 +8,9 @@ package behavioral
  *  +----------------+
  *  |     Context    |         +---------------+
  *  +----------------+         | <<interface>> |
- *  |- strategy      |<>------>|   Strategy    |
+ *  |- strategy      |<>------>|   IStrategy   |
  *  +----------------+         +---------------+
- *  |+ doSomething() |         |+ invoke(data) |
+ *  |+ request()     |         |+ handle(data) |
  *  +----------------+         +---------------+
  *       ^                             ^
  *       |                             .
@@ -20,7 +20,7 @@ package behavioral
  *  +--------+                 | ConcreteStrategies | |
  *  | Client |---------------->+--------------------+ |
  *  +--------+                 +--------------------+ |
- *                             |+ invoke(data)      | |
+ *                             |+ handle(data)      | |
  *                             +--------------------+ |
  +                              \+--------------------+
  *
@@ -30,66 +30,36 @@ package behavioral
 
 /*** Standard (Java) Approach ***/
 
-interface StdStrategy {
-    fun invoke(data: String)
+interface IStdStrategy {
+    fun handle(data: String): String
 }
 
-class StdConcreteStrategy1: StdStrategy {
-    override fun invoke(data: String) {
-        println("StdConcreteStrategy1::invoke($data)")
+class StdStrategyA: IStdStrategy {
+    override fun handle(data: String): String {
+        return "StrategyA - ($data)"
     }
 }
 
-class StdConcreteStrategy2: StdStrategy {
-    override fun invoke(data: String) {
-        println("StdConcreteStrategy2::invoke($data)")
+class StdStrategyB: IStdStrategy {
+    override fun handle(data: String): String {
+        return "StrategyB - ($data)"
     }
 }
 
-class StdContext(var data: String, var strategy: StdStrategy) {
-    fun doSomething() {
-        strategy.invoke(data)
+class StdContext(private var data: String, var strategy: IStdStrategy) {
+    fun request(): String {
+        return strategy.handle(data)
     }
-}
-
-fun standardWay() {
-
-    println("Standard Way")
-
-    val data = "Standard Strategy Pattern"
-    val context = StdContext(data, StdConcreteStrategy1())
-    context.doSomething()
-
-    context.strategy = StdConcreteStrategy2()
-    context.doSomething()
 }
 
 /*** Kotlin Approach ***/
 
-typealias KtStrategy = (String) -> Unit
+typealias IKtStrategy = (String) -> String
 
-class KtContext(var data: String, var ktStrategy: KtStrategy) {
-    fun doSomething() = ktStrategy.invoke(data)
+class KtContext(var data: String, var ktStrategy: IKtStrategy) {
+    fun request(): String = ktStrategy.invoke(data)
 }
 
-val ktConcreteStrategy1 = { data: String -> println("ktConcreteStrategy1::invoke($data)")}
-val ktConcreteStrategy2 = { data: String -> println("ktConcreteStrategy2::invoke($data)")}
+val ktStrategyA = { data: String -> "StrategyA - ($data)"}
+val ktStrategyB = { data: String -> "StrategyB - ($data)"}
 
-fun kotlinWay() {
-
-    println("Kotlin Way")
-
-    val data = "Kotlin Strategy Pattern"
-    val kotlinContext = KtContext(data, ktConcreteStrategy1)
-    kotlinContext.doSomething()
-
-    kotlinContext.ktStrategy = ktConcreteStrategy2
-    kotlinContext.doSomething()
-}
-
-/*** Client ***/
-
-fun main (args: Array<String>) {
-    standardWay()
-    kotlinWay()
-}
