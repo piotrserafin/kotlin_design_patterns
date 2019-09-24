@@ -1,4 +1,4 @@
-name: Design Patterns Tests CI
+name: test_ci
 
 on: [push]
 
