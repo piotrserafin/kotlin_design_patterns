@@ -46,7 +46,7 @@ class StdStrategyB: IStdStrategy {
     }
 }
 
-class StdContext(private var data: String, var strategy: IStdStrategy) {
+class StdStrategyContext(private var data: String, var strategy: IStdStrategy) {
     fun request(): String {
         return strategy.handle(data)
     }

@@ -2,8 +2,6 @@ package behavioral
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 
 
 class StrategyTest {
@@ -14,7 +12,7 @@ class StrategyTest {
         val expectedStringFromStrategyA = "StrategyA - (standard)"
         val expectedStringFromStrategyB = "StrategyB - (standard)"
 
-        val context = StdContext(testData, StdStrategyA())
+        val context = StdStrategyContext(testData, StdStrategyA())
         assertEquals(expectedStringFromStrategyA, context.request())
 
         context.strategy = StdStrategyB()
