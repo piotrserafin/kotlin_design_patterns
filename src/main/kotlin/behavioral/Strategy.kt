@@ -24,9 +24,7 @@ package behavioral
  *                             +--------------------+ |
  +                              \+--------------------+
  *
- *
  */
-
 
 /*** Standard (Java) Approach ***/
 
